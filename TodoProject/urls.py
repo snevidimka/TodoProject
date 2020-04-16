@@ -21,5 +21,5 @@ from list_item.views import list_item_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_view),
-    path('notes', list_item_view),
+    path('notes/', list_item_view),
 ]
