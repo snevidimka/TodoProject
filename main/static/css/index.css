@@ -451,6 +451,7 @@ body {
   vertical-align: middle;
   width: 50px;
   height: 40px;
+  margin-right: 250px;
   background: #004949;
   border-radius: 6px;
   font-family: Inter;
@@ -498,6 +499,7 @@ body {
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row: 1/2;
+  margin-left: 200px;
   text-align: center;
   color: #48555F;
   font-family: Inter;
