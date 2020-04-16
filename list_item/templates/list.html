@@ -65,7 +65,13 @@
                         </a>
                     </div>
                     <div class="calendarik">
-                        {{ event.date }}
+                        {% if event.date%}
+                            {{ event.date }}
+                        {% else %}
+                            <a href='#'>
+                                <img src=" static/images/calendar.png" alt="calendar" width="26px" height="24px">
+                            </a>
+                        {% endif %}
                     </div>
                     <div class="table-row_table_icon">
                         <a class="delete_button" href="#">
