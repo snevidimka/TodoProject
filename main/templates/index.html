@@ -1,4 +1,4 @@
-{% load get_count %}
+{% load my_tag %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -108,7 +108,7 @@
                         </a>
                     </div>
                 </div>
-            {% templatetags %}
+            {{ lists|my_tag }}
         </div>
     </section>
 
