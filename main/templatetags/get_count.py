@@ -5,7 +5,7 @@ from django.utils.html import format_html
 register = template.Library()
 
 
-@register.filter(name='templatetags')
+@register.simple_tag()
 def templatetags():
     value = '<div class="table-data__table-row"></div>' \
             '<div class="table-data__table-row"></div>' \
