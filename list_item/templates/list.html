@@ -8,14 +8,14 @@
     <title>Список</title>
 
     <link rel="shortcut icon" type="image/png" href="imges/favicon.png"/>
-    <link rel="stylesheet" href=" /static/css/index.css">
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
 <div class='wrapper'>
     <section class='wrapper__adress'>
         <div class='adress__header'>
             <div class='header__logo'>
-                <img src=" /static/images/lists-big.png" alt="exit" width="60px">
+                <img src="/static/images/lists-big.png" alt="exit" width="60px">
             </div>
             <div class='header__user-profile'>
                 <div class='user-profile__icon-user'>
@@ -44,15 +44,13 @@
                          <div class="header__button-create-bundle">+</div>
                     </a>
             </div>
-        {% for event in events %}
-            <div class="table-data__table-row">
-                <div class="table-row_table_cell-1">
-                    {% if event.is_done %}
-                        <li>{{ event.name }}</li>
-                    {% else %}
-                        <li class="is_done_text">{{ event.name }}</li>
-                    {% endif %}
-                </div>
+            {% for list in lists %}
+                <div class="table-data__table-row">
+                {% if list.is_done %}
+                    <div class="table-row_table_cell-1 is_done_text"> {{ list.name }}</div>
+                {% else %}
+                    <div class="table-row_table_cell-1"> {{ list.name }}</div>
+                {% endif %}
                 <div class="buttons">
                     <div class="table-data-two_table-icon">
                         <a href='#'>
@@ -65,11 +63,11 @@
                         </a>
                     </div>
                     <div class="calendarik">
-                        {% if event.date%}
-                            {{ event.date }}
+                        {% if list.date %}
+                            {{ list.date }}
                         {% else %}
                             <a href='#'>
-                                <img src=" /static/images/calendar.png" alt="calendar" width="26px" height="24px">
+                                <img src="/static/images/calendar.png" alt="calendar" width="26px" height="24px">
                             </a>
                         {% endif %}
                     </div>
@@ -85,109 +83,12 @@
                      </div>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
         </div>
     </section>
 
 </div>
 
 </body>
-
-<script>
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    var csrftoken = getCookie('csrftoken');
-    const delButton = document.querySelectorAll('.delete_button');
-
-    const delUrl = (event) => {
-        event.preventDefault();
-        url = event.currentTarget.href;
-        console.log(url);
-        return fetch(url,
-            {
-                method: 'POST',
-                headers: new Headers({'X-CSRFToken': csrftoken}),
-                redirect: 'follow'
-            }).then(response => response.status).then(data => location.reload());
-    };
-
-    delButton.forEach(button => {
-        button.addEventListener('click', delUrl);
-    });
-
-    var scheduler = JSON.parse('{{scheduler_dict|safe}}');
-    console.log(scheduler);
-
-    var index;
-    for (index = 0; index < scheduler.length; ++index) {
-        var row = scheduler[index];
-        var check = document.getElementsByName(row.pk);
-        check.forEach((el) => {
-            el.checked = row.status;
-            el.addEventListener('change', (event) => {
-                inputCheck(event.target.checked, event.target.name)
-            });
-        });
-    }
-
-    const inputCheck = (check, id) => {
-        url = '/update/' + id;
-        return fetch(url,
-            {
-                method: 'PATCH',
-                headers: new Headers({
-                    'X-CSRFToken': csrftoken,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }),
-                redirect: 'follow',
-                body: JSON.stringify({'id': id, 'enabled': check})
-            }).then(response => response.status);
-    };
-
-    const loadAllFunc = (event) => {
-        event.preventDefault();
-        url = event.currentTarget.href;
-        return fetch(url,
-            {
-                method: 'POST',
-                headers: new Headers({'X-CSRFToken': csrftoken}),
-                redirect: 'follow'
-            }).then(response => response.status);
-    };
-
-    const loadAllButton = document.querySelector('.load_all_items');
-    loadAllButton.addEventListener('click', loadAllFunc);
-
-    const loadUpdateFunc = (event) => {
-        event.preventDefault();
-        url = event.currentTarget.href;
-        return fetch(url,
-            {
-                method: 'POST',
-                headers: new Headers({'X-CSRFToken': csrftoken}),
-                redirect: 'follow'
-            }).then(response => response.status);
-    };
-
-    const loadUpdateButton = document.querySelector('.load_update_items');
-    loadUpdateButton.addEventListener('click', loadUpdateFunc);
-
-
-</script>
 
 </html>
