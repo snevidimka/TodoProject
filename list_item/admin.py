@@ -10,3 +10,4 @@ class ListAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ListItemModel, ListAdmin)
+
