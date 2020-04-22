@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 
 data = {
-    'events': [
+    'lists': [
         {'name': 'Купить', 'is_done': True, 'date' : '29.12.2020'},
         {'name': 'Заказать', 'is_done': False, 'date' : '30.12.2020'},
         {'name': 'Разослать', 'is_done': False, 'date' : None}
