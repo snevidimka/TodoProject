@@ -8,4 +8,5 @@ urlpatterns = [
     path('', list_item_view, name='list_item'),
     path('edit/', list_item_view, name='list_item'),
     path('delete/', list_item_view, name='list_item'),
+    path('list/<int:pk>', list_item_view, name='list'),
 ]

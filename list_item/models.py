@@ -10,8 +10,8 @@ class ListItemModel(models.Model):
     is_done = models.BooleanField(default=False)
     expare_date = models.DateField(blank=True, null=True)
 
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = 'Элемент списка'

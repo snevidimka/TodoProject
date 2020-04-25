@@ -18,7 +18,7 @@
     <section class='wrapper__adress'>
         <div class='adress__header'>
             <div class='header__logo'>
-                <img src="static/images/lists-big.png" alt="exit" width="60px">
+                <img src="/static/images/lists-big.png" alt="exit" width="60px">
             </div>
             <div class='header__user-profile'>
                 <div class='user-profile__icon-user'>
@@ -32,22 +32,11 @@
                 <div class='user-profile__user-name'>
                     <span>{{ user }}</span>
                 </div>
-                <a class="user-profile_exit-button" href="/logout"><img src=" static/images/exit.svg" alt="exit"></a>
+                <a class="user-profile_exit-button" href="/logout"><img src="/static/images/exit.svg" alt="exit"></a>
             </div>
         </div>
 
     </section>
-
-    <section class="wrapper__relationship">
-
-        <div class="relationship__table-data">
-            <div class="table-data__table-header">
-                <div class="table-data_table-header-item-1">TO DO List</div>
-                <a class="add_new_list" href="/create/">
-                     <div class="header__button-create-bundle">+</div>
-                </a>
-
-            </div>
 
         {% block body %}
 

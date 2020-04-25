@@ -123,11 +123,12 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Минимальное кол-во div блоков на странице
+DIV_COUNT = 6
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
 
-
-# Минимальное кол-во div блоков на странице
-DIV_COUNT = 6

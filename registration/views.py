@@ -7,7 +7,6 @@ def create_user(request):
 
     if request.main.method == 'POST':
         form = CustomUserForm(data=request.POST)
-
         success_url = reverse('registration:login')
 
         if form.is_valid():
