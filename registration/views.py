@@ -17,4 +17,9 @@ def create_user(request):
 
 
 def login_view(request):
-    return render(request, 'login.html', {})
+
+    return render(request, 'login.html')
+
+
+
+

@@ -14,3 +14,5 @@ class ListModel(models.Model):
 
     class Meta:
         verbose_name = 'Список дел'
+
+

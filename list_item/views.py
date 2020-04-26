@@ -5,17 +5,18 @@ from main.models import ListModel
 
 def list_item_view(request, pk):
     '''при запросе вернет ответ со страничкой list.html'''
+    tytle = ListModel.objects.filter(listitemmodel__name='') # надо доделать
     lists = ListItemModel.objects.filter(id=pk)
     context = {
         'lists': lists,
-        'user': request.user.username,
+        'tytle': tytle,
     }
     return render(request, 'list.html', context)
 
 
 def edit_view(request, pk):
-    return
+    pass
 
 
 def create_view(request, pk):
-    return
+    pass
