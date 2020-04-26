@@ -19,5 +19,5 @@ def edit_view(request, pk):
     return 'Hello'
 
 
-def list_item_view(request, pk):
-    return reverse('list_item:list')
+def create_view(request, pk):
+    return 'Hello'

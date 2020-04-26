@@ -8,6 +8,14 @@ def list_item_view(request, pk):
     lists = ListItemModel.objects.filter(id=pk)
     context = {
         'lists': lists,
+        'user': request.user.username,
     }
     return render(request, 'list.html', context)
 
+
+def edit_view(request, pk):
+    return
+
+
+def create_view(request, pk):
+    return

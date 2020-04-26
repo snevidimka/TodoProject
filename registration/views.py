@@ -5,7 +5,7 @@ from registration.forms import CustomUserForm
 def create_user(request):
     form = CustomUserForm()
 
-    if request.main.method == 'POST':
+    if request.method == 'POST':
         form = CustomUserForm(data=request.POST)
         success_url = reverse('registration:login')
 
