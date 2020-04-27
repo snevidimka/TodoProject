@@ -5,14 +5,23 @@
 {% endblock %}
 
 {% block body %}
+    <section class="wrapper__relationship">
+
+        <div class="relationship__table-data">
+            <div class="table-data__table-header">
+                <div class="table-data_table-header-item-1">TO DO list</div>
+                <a class="add_new_list" href="{% url "main:create" %}">
+                     <div class="header__button-create-bundle">+</div>
+                </a>
+            </div>
     {% for list in lists %}
         <div class="table-data__table-row">
         <div class="table-row_table_cell-1">
-            <a href="#">
+            <a href="{% url "list_item:list_item" pk=list.id %}">
                 {% if list.is_done %}
-                    <li>{{ list.name }}</li>
-                {% else %}
                     <li class="is_done_text">{{ list.name }}</li>
+                {% else %}
+                    <li>{{ list.name }}</li>
                 {% endif %}
             </a>
         </div>

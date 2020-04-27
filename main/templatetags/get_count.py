@@ -1,4 +1,4 @@
-# from django import template
+# from django import templates
 # from django.utils.html import format_html
 from django.template.defaulttags import register
 from TodoProject.settings import DIV_COUNT
