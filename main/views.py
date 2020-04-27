@@ -9,6 +9,7 @@ def main_view(request):
     # ListItem.objects.filter(list__user_username='Admin')
     user = request.user
     lists = ListModel.objects.filter(user=user,).order_by('created')
+
     context = {
         'lists': lists,
         'user': user.username,
@@ -24,7 +25,8 @@ def create_view(request):
     form = ListForm()
 
     if request.method == 'POST':
-        form = ListForm(request.POST)
+        name = request.POST['name']
+        form = ListForm({'name': name, 'user': request.user})
         success_url = reverse('main:main')
 
         if form.is_valid():
@@ -32,3 +34,4 @@ def create_view(request):
             return redirect(success_url)
 
     return render(request, 'new_list.html', {'form': form})
+

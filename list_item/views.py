@@ -6,11 +6,11 @@ from main.models import ListModel
 def list_item_view(request, pk):
     '''при запросе вернет ответ со страничкой list.html'''
 
-    name = ListModel.objects.filter(id=pk).first()
+    list_name = ListModel.objects.filter(id=pk).first()
     lists = ListItemModel.objects.filter(id=pk)
     context = {
         'lists': lists,
-        'name': name,
+        'list_name': list_name.name,
     }
     return render(request, 'list.html', context)
 
