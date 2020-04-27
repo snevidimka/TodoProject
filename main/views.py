@@ -25,7 +25,7 @@ def create_view(request):
 
     if request.method == 'POST':
         form = ListForm(request.POST)
-        success_url = reverse('main:create')
+        success_url = reverse('main:main')
 
         if form.is_valid():
             form.save()
