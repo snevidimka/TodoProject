@@ -8,4 +8,4 @@ class ListForm(forms.ModelForm):
 
     class Meta:
         model = ListModel
-        fields = ('name',)
+        fields = ('name', 'user')

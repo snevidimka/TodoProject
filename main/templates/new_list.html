@@ -16,6 +16,7 @@
                Новый список
           </div>
           <form class="auth_form_class" action="" id="auth_form" method="POST">
+              {% csrf_token %}
               {{ form }}
           </form>
           <div class="auth__column_right__form_footer">
