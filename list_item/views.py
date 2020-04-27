@@ -5,11 +5,12 @@ from main.models import ListModel
 
 def list_item_view(request, pk):
     '''при запросе вернет ответ со страничкой list.html'''
-    tytle = ListModel.objects.filter(listitemmodel__name='') # надо доделать
+
+    name = ListModel.objects.filter(id=pk).first()
     lists = ListItemModel.objects.filter(id=pk)
     context = {
         'lists': lists,
-        'tytle': tytle,
+        'name': name,
     }
     return render(request, 'list.html', context)
 
