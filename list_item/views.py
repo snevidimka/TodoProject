@@ -1,23 +1,29 @@
 from django.shortcuts import render
 from list_item.models import ListItemModel
 from main.models import ListModel
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseNotFound
 
 
+@login_required(login_url='/registration/login/')
 def list_item_view(request, pk):
     '''при запросе вернет ответ со страничкой list.html'''
 
-    name = ListModel.objects.filter(id=pk).first()
-    lists = ListItemModel.objects.filter(id=pk)
+    list_name = ListModel.objects.filter(id=pk, user_id=request.user.id).first()
+    if not list_name:
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
+    lists = ListItemModel.objects.filter(list_id=pk)
     context = {
         'lists': lists,
-        'name': name,
+        'list_name': list_name.name,
     }
     return render(request, 'list.html', context)
 
 
-def edit_view(request, pk):
-    pass
-
-
-def create_view(request, pk):
-    pass
+# def edit_view(request, pk):
+#     pass
+#
+#
+# def create_view(request, pk):
+#     pass

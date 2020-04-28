@@ -132,3 +132,5 @@ DIV_COUNT = 6
 
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/registration/login/'
+
