@@ -9,9 +9,8 @@ from django.http import HttpResponseNotFound
 def list_item_view(request, pk):
     '''при запросе вернет ответ со страничкой list.html'''
 
-    list_name = ListModel.objects.filter(id=pk).first()
-    b = list(ListModel.objects.filter(user_id=request.user.pk))
-    if b.count(list_name) == 0:
+    list_name = ListModel.objects.filter(id=pk, user_id=request.user.id).first()
+    if not list_name:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
     lists = ListItemModel.objects.filter(list_id=pk)
