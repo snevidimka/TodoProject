@@ -1,9 +1,11 @@
 from django.shortcuts import render, reverse, redirect
 from main.models import ListModel
 from main.forms import ListForm
+from django.contrib.auth.decorators import login_required
 from list_item.models import ListItemModel
 
 
+@login_required(login_url='/registration/login/')
 def main_view(request):
     '''при запросе вернет ответ со страничкой index.html'''
     # ListItem.objects.filter(list__user_username='Admin')
