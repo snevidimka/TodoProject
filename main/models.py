@@ -10,9 +10,10 @@ class ListModel(models.Model):
     is_done = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return f'{self.id} : {self.name} : {self.user}'
 
     class Meta:
         verbose_name = 'Список дел'
+        unique_together = ('name', 'user')
 
 

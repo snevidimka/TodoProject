@@ -18,6 +18,7 @@
           <form class="auth_form_class" action="" id="auth_form" method="POST">
               {% csrf_token %}
               {{ form.name }}
+              {{ form.expire_date }}
               {% if form.non_field_errors %}
                 {% for error in form.non_field_errors %}
                   {{ error }}
@@ -30,7 +31,7 @@
               <div class="auth__button_submit" id="login-submit-btn" ><span>&#10004</span></div>
             </label>
             <label class="form_footer_button-cancel">
-                <a href="{% url "main:main" %}">
+                <a href="{% url "list_item:list_item" %}">
                     <div class="auth__button_submit" id="login-cancel-btn" ><span>&#9587</span></div>
                 </a>
             </label>
