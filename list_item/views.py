@@ -4,6 +4,7 @@ from main.models import ListModel
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 from list_item.forms import ListItemForm
+from django.contrib.auth import logout
 
 
 @login_required(login_url='registration/login/')
@@ -37,6 +38,11 @@ def create_item_view(request, pk):
             return redirect(success_url)
 
     return render(request, 'new_list_item.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('main:main')
 
 # def edit_view(request, pk):
 #     pass

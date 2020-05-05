@@ -3,6 +3,7 @@ from main.models import ListModel
 from main.forms import ListForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import logout
 from list_item.models import ListItemModel
 
 
@@ -53,3 +54,7 @@ def create_view(request):
 
     return render(request, 'new_list.html', {'form': form})
 
+
+def logout_view(request):
+    logout(request)
+    return redirect('main:main')
