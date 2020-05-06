@@ -9,7 +9,9 @@
         <div class="relationship__table-data">
             <div class="table-data__table-header">
                 <div class="table-data_table-header-item-1">
-                    <a href='{% url "main:main" %}'>{{ list_name.name }}</a>
+                    <a href='{% url "main:main" %}'>
+                        {{ list_name.name }}
+                    </a>
                 </div>
                 <a class="add_new_list" href="{% url "list_item:create" pk=list_name.id %}">
                      <div class="header__button-create-bundle">+</div>
@@ -59,5 +61,15 @@
     </section>
 
 </div>
-
+    {% if pages.1 %}
+        <div class="table-data__table-row">
+            <div class="paginator_class">
+                <ul class="pagination-wrapper_button">
+                    {% for page in pages %}
+                        <li><a class="active" href="/?page={{ page }}">{{ page }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
