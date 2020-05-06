@@ -8,7 +8,9 @@
     <section class="wrapper__relationship">
         <div class="relationship__table-data">
             <div class="table-data__table-header">
-                <div class="table-data_table-header-item-1">{{ list_name }}</div>
+                <div class="table-data_table-header-item-1">
+                    <a href='{% url "main:main" %}'>{{ list_name.name }}</a>
+                </div>
                 <a class="add_new_list" href="{% url "list_item:create" pk=list_name.id %}">
                      <div class="header__button-create-bundle">+</div>
                 </a>
@@ -22,7 +24,7 @@
                 {% endif %}
                 <div class="buttons">
                     <div class="table-data-two_table-icon">
-                        <a href='#'>
+                        <a href='{% url "list_item:edit" pk=list_name.id %}'>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"

@@ -31,7 +31,7 @@
               <div class="auth__button_submit" id="login-submit-btn" ><span>&#10004</span></div>
             </label>
             <label class="form_footer_button-cancel">
-                <a href="{% url "list_item:list_item" %}">
+                <a href="{% url "list_item:list_item" pk=list_name.id %}">
                     <div class="auth__button_submit" id="login-cancel-btn" ><span>&#9587</span></div>
                 </a>
             </label>

@@ -15,3 +15,4 @@ class ListItemModel(models.Model):
 
     class Meta:
         verbose_name = 'Элемент списка'
+        unique_together = ('name', 'list', 'expare_date')

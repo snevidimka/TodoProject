@@ -6,7 +6,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import logout
 from list_item.models import ListItemModel
 
-
 PAGE_COUNT = 6
 
 
@@ -15,7 +14,7 @@ def main_view(request):
     '''при запросе вернет ответ со страничкой index.html'''
     # ListItem.objects.filter(list__user_username='Admin')
     user = request.user
-    lists = ListModel.objects.filter(user=user,).order_by('-created')
+    lists = ListModel.objects.filter(user=user, ).order_by('-created')
 
     paginator = Paginator(lists, PAGE_COUNT)
     page = request.GET.get('page')
@@ -30,13 +29,9 @@ def main_view(request):
     context = {
         'lists': list_page,
         'user': user.username,
-        'pages': list(paginator.page_range), # общее кол-во страниц
+        'pages': list(paginator.page_range),  # общее кол-во страниц
     }
     return render(request, 'index.html', context)
-
-
-def edit_view(request, pk):
-    return
 
 
 @login_required(login_url='registration/login/')
@@ -58,3 +53,19 @@ def create_view(request):
 def logout_view(request):
     logout(request)
     return redirect('main:main')
+
+
+def edit_view(request, pk):
+    obj = ListModel.objects.filter(id=pk).first()
+    form = ListForm(instance=obj)
+
+    if request.method == 'POST':
+        name = request.POST['name']
+        form = ListForm({'name': name, 'user': request.user})
+        success_url = reverse('main:main')
+
+        if form.is_valid():
+            form.save()
+            return redirect(success_url)
+
+    return render(request, 'new_list.html', {'form': form})

@@ -44,7 +44,19 @@ def logout_view(request):
     logout(request)
     return redirect('main:main')
 
-# def edit_view(request, pk):
-#     pass
 
+def edit_item_view(request, pk):
+    obj = ListItemModel.objects.filter(id=pk).first()
+    form = ListItemForm(instance=obj)
 
+    if request.method == 'POST':
+        name = request.POST['name']
+        expare_date = request.POST['expare_date']
+        form = ListItemForm({'name': name, 'expare_date': expare_date, 'list': pk})
+        success_url = reverse('list_item:list_item', kwargs={'pk': 5})
+
+        if form.is_valid():
+            form.save()
+            return redirect(success_url)
+
+    return render(request, 'new_list.html', {'form': form})
