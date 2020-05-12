@@ -1,8 +1,7 @@
 from django.shortcuts import render, reverse, redirect
 from registration.forms import CustomUserForm
 from registration.forms import LoginForm
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
@@ -42,9 +41,8 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-@login_required(login_url='registration/login/')
 def logout_view(request):
     """ Разлогинивание пользователя """
     logout(request)
-    success_url = reverse('registration:logout')
+    success_url = reverse('registration:login')
     return redirect(success_url)

@@ -33,7 +33,6 @@ def main_view(request):
     return render(request, 'index.html', context)
 
 
-@login_required(login_url='registration/login/')
 def create_view(request):
     """ Создание списка задач """
     form = ListForm()
@@ -50,7 +49,6 @@ def create_view(request):
     return render(request, 'new_list.html', {'form': form})
 
 
-@login_required(login_url='registration/login/')
 def edit_view(request, pk):
     """ Редактирование списка задач """
     obj = ListModel.objects.filter(id=pk).first()

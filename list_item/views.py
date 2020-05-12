@@ -38,7 +38,6 @@ def list_item_view(request, pk):
     return render(request, 'list.html', context)
 
 
-@login_required(login_url='registration/login/')
 def create_item_view(request, pk):
     """ Создание нового списка дел """
     form = ListItemForm()
@@ -79,7 +78,6 @@ def edit_item_view(request, pk):
     return render(request, 'edit_list_item.html', {'form': form, 'pk': list_id})
 
 
-@login_required(login_url='registration/login/')
 def done_item_view(request):
     data = json.loads(request.body.decode())
     pk = int(data['id'])
