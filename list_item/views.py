@@ -66,7 +66,7 @@ def edit_item_view(request, pk):
         name = request.POST['name']
         expare_date = request.POST['expare_date']
         form = ListItemForm({'name': name, 'expare_date': expare_date, 'list': pk})
-        success_url = reverse('list_item:list_item', kwargs={'pk': 5})
+        success_url = reverse('list_item:list_item', kwargs={'pk': pk})
 
         if form.is_valid():
             form.save()
