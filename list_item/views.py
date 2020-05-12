@@ -38,7 +38,7 @@ def list_item_view(request, pk):
     return render(request, 'list.html', context)
 
 
-@login_required(login_url='registration/login/')
+
 def create_item_view(request, pk):
     """ Создание нового списка дел """
     form = ListItemForm()
