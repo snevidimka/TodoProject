@@ -3,7 +3,6 @@ from main.models import ListModel
 from main.forms import ListForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.contrib.auth import logout
 from list_item.models import ListItemModel
 
 PAGE_COUNT = 6
@@ -36,6 +35,7 @@ def main_view(request):
 
 @login_required(login_url='registration/login/')
 def create_view(request):
+    """ Создание списка задач """
     form = ListForm()
 
     if request.method == 'POST':
@@ -50,12 +50,9 @@ def create_view(request):
     return render(request, 'new_list.html', {'form': form})
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('main:main')
-
-
+@login_required(login_url='registration/login/')
 def edit_view(request, pk):
+    """ Редактирование списка задач """
     obj = ListModel.objects.filter(id=pk).first()
     form = ListForm(instance=obj)
 

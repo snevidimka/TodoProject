@@ -2,9 +2,13 @@ from django.shortcuts import render, reverse, redirect
 from registration.forms import CustomUserForm
 from registration.forms import LoginForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='registration/login/')
 def create_user(request):
+    """ Создание пользователя """
     form = CustomUserForm()
 
     if request.method == 'POST':
@@ -18,8 +22,9 @@ def create_user(request):
     return render(request, 'registration.html', {'form': form})
 
 
+@login_required(login_url='registration/login/')
 def login_view(request):
-    """ Логин """
+    """ Залогинивание пользователя """
     form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -37,5 +42,9 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-
-
+@login_required(login_url='registration/login/')
+def logout_view(request):
+    """ Разлогинивание пользователя """
+    logout(request)
+    success_url = reverse('registration:logout')
+    return redirect(success_url)

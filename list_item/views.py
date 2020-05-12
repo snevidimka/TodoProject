@@ -4,7 +4,6 @@ from main.models import ListModel
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound
 from list_item.forms import ListItemForm
-from django.contrib.auth import logout
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -41,6 +40,7 @@ def list_item_view(request, pk):
 
 @login_required(login_url='registration/login/')
 def create_item_view(request, pk):
+    """ Создание нового списка дел """
     form = ListItemForm()
 
     if request.method == 'POST':
@@ -53,15 +53,12 @@ def create_item_view(request, pk):
             form.save()
             return redirect(success_url)
 
-    return render(request, 'new_list_item.html', {'form': form})
+    return render(request, 'new_list_item.html', {'form': form, 'pk': pk})
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('main:main')
-
-
+@login_required(login_url='registration/login/')
 def edit_item_view(request, pk):
+    """ Редактирование существующего списка дел """
     obj = ListItemModel.objects.filter(id=pk).first()
     form = ListItemForm(instance=obj)
 
