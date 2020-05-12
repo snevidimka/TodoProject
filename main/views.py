@@ -65,4 +65,4 @@ def edit_view(request, pk):
             form.save()
             return redirect(success_url)
 
-    return render(request, 'new_list.html', {'form': form})
+    return render(request, 'list.html', {'form': form})

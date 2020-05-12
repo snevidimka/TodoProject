@@ -36,12 +36,10 @@
                         </a>
                     </div>
                     <div class="calendarik">
-                        {% if list.date %}
-                            {{ list.date }}
+                        {% if list.expare_date %}
+                            {{ list.expare_date }}
                         {% else %}
-                            <a href='#'>
                                 <img src="/static/images/calendar.png" alt="calendar" width="26px" height="24px">
-                            </a>
                         {% endif %}
                     </div>
                     <div class="table-row_table_icon">
@@ -66,10 +64,61 @@
             <div class="paginator_class">
                 <ul class="pagination-wrapper_button">
                     {% for page in pages %}
-                        <li><a class="active" href="/?page={{ page }}">{{ page }}</a></li>
+                        <li><a class="active" href="/list/{{ list_name.id }}?page={{ page }}">{{ page }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block js %}
+<script>
+const rows = document.querySelectorAll('.table-row_table_cell-1');
+rows.forEach(handler);
+const token = getCookie('csrftoken');
+
+function handler(row) {
+    row.addEventListener('click', isDoneRequest);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function isDoneRequest(event) {
+    const id = event.target.id.split('_').pop();
+    const listId = document.location.href.split('/').pop();
+    const url = document.location.href.replace(`/${listId}`, '/done/');
+    return fetch(url, {
+        method: 'POST',
+        headers: new Headers({'X-CSRFToken': token}),
+        redirect: 'follow',
+        body: JSON.stringify({id: id})
+    }).then(respone => {
+        if (respone.status === 201) {
+            if (event.target.classList.contains('is_done_text')) {
+                event.target.classList.remove('is_done_text');
+            } else {
+                event.target.classList.add('is_done_text');
+            }
+        } else {
+            alert('Сервер не доступен');
+        }
+    })
+}
+</script>
 {% endblock %}

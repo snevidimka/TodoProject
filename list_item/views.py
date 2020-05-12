@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, reverse
 from list_item.models import ListItemModel
 from main.models import ListModel
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponse
 from list_item.forms import ListItemForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+import json
 
 PAGE_COUNT = 6
 
@@ -38,7 +38,7 @@ def list_item_view(request, pk):
     return render(request, 'list.html', context)
 
 
-
+@login_required(login_url='registration/login/')
 def create_item_view(request, pk):
     """ Создание нового списка дел """
     form = ListItemForm()
@@ -56,20 +56,35 @@ def create_item_view(request, pk):
     return render(request, 'new_list_item.html', {'form': form, 'pk': pk})
 
 
-@login_required(login_url='registration/login/')
 def edit_item_view(request, pk):
     """ Редактирование существующего списка дел """
-    obj = ListItemModel.objects.filter(id=pk).first()
-    form = ListItemForm(instance=obj)
+    list_item = ListItemModel.objects.filter(id=pk).first()
+    list_id = list_item.list_id
 
     if request.method == 'POST':
-        name = request.POST['name']
-        expare_date = request.POST['expare_date']
-        form = ListItemForm({'name': name, 'expare_date': expare_date, 'list': pk})
-        success_url = reverse('list_item:list_item', kwargs={'pk': pk})
+        form = ListItemForm({
+            'name': request.POST['name'],
+            'expare_date': request.POST['expare_date'],
+            'list': list_id
+        }, instance=list_item)
+        success_url = reverse('list_item:list_item', kwargs={'pk': list_id})
 
         if form.is_valid():
             form.save()
             return redirect(success_url)
 
-    return render(request, 'new_list.html', {'form': form})
+    else:
+        form = ListItemForm(instance=list_item)
+
+    return render(request, 'edit_list_item.html', {'form': form, 'pk': list_id})
+
+
+@login_required(login_url='registration/login/')
+def done_item_view(request):
+    data = json.loads(request.body.decode())
+    pk = int(data['id'])
+    list_item = ListItemModel.objects.get(id=pk)
+    value = not list_item.is_done
+    list_item.is_done = value
+    list_item.save()
+    return HttpResponse(status=201)

@@ -10,7 +10,7 @@ class ListItemForm(forms.ModelForm):
 
     class Meta:
         model = ListItemModel
-        fields = ('name', 'list')
+        fields = ('name', 'expare_date', 'list')
         error_messages = {
             NON_FIELD_ERRORS: {
                 'unique_together': "Имя уже существует",
