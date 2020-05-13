@@ -41,7 +41,6 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-@login_required(login_url='registration/login/')
 def logout_view(request):
     """ Разлогинивание пользователя """
     logout(request)
