@@ -38,6 +38,7 @@ def list_item_view(request, pk):
     return render(request, 'list.html', context)
 
 
+@login_required(login_url='registration/login/')
 def create_item_view(request, pk):
     """ Создание нового списка дел """
     form = ListItemForm()
@@ -55,6 +56,7 @@ def create_item_view(request, pk):
     return render(request, 'new_list_item.html', {'form': form, 'pk': pk})
 
 
+@login_required(login_url='registration/login/')
 def edit_item_view(request, pk):
     """ Редактирование существующего списка дел """
     list_item = ListItemModel.objects.filter(id=pk).first()
