@@ -16,9 +16,15 @@ class ListItemModel(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         # TODO Написать логику, зачеркивания Списка, когда все дела в этом списке выполнены
-        list_ = self.list
         super().save()
-
+        list_ = self.list
+        if all(list_.listitemmodel_set.all().values_list('is_done', flat=True)):
+            list_.is_done = True
+            list_.save()
+        else:
+            if list_.is_done:
+                list_.is_done = False
+                list_.save()
 
 
     class Meta:
