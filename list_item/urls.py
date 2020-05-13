@@ -1,13 +1,14 @@
 from django.urls import path
-from list_item.views import list_item_view, create_item_view, edit_item_view, done_item_view
-
+from list_item.views import list_item_view, create_item_view, edit_item_view, done_item_view, delete_item_view, \
+    all_done_view
 
 app_name = 'list_item'
 
 urlpatterns = [
     path('<int:pk>', list_item_view, name='list_item'),
     path('edit/<int:pk>', edit_item_view, name='edit'),
-    path('delete/', list_item_view, name='delete'),
+    path('delete/', delete_item_view, name='delete'),
     path('create/<int:pk>', create_item_view, name='create'),
     path('done/', done_item_view, name='done'),
+    path('all_done/', all_done_view, name='all_done'),
 ]

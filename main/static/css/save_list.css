@@ -74,14 +74,13 @@ body {
   float: right;
   background-color: #FFFFFF; }
 
-
-
 .auth__column_right_form {
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   align-items: center;
-  border: 2px groove;
+  box-shadow: -10px -10px 10px -10px rgba(34, 60, 80, 0.8) inset;
+  border-radius: 10px;
 }
 
 .auth__column_right_form__header {
@@ -220,3 +219,4 @@ body {
     color: #0085FF; }
   .auth__password_recovery a:visited {
     color: #55acfd; }
+

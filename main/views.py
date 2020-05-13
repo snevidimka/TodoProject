@@ -8,7 +8,7 @@ from list_item.models import ListItemModel
 PAGE_COUNT = 6
 
 
-@login_required(login_url='registration/login/')
+@login_required(login_url='/registration/login/')
 def main_view(request):
     '''при запросе вернет ответ со страничкой index.html'''
     # ListItem.objects.filter(list__user_username='Admin')
@@ -33,7 +33,7 @@ def main_view(request):
     return render(request, 'index.html', context)
 
 
-@login_required(login_url='registration/login/')
+@login_required(login_url='/registration/login/')
 def create_view(request):
     """ Создание списка задач """
     form = ListForm()
@@ -50,7 +50,7 @@ def create_view(request):
     return render(request, 'new_list.html', {'form': form})
 
 
-@login_required(login_url='registration/login/')
+@login_required(login_url='/registration/login/')
 def edit_view(request, pk):
     """ Редактирование существующей задачи """
     list_ = ListModel.objects.filter(id=pk).first()
