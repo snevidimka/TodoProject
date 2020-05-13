@@ -20,13 +20,13 @@
             {% for list in lists %}
                 <div class="table-data__table-row">
                 {% if list.is_done %}
-                    <div class="table-row_table_cell-1 is_done_text"> {{ list.name }}</div>
+                    <div id="isDone_{{ list.id }}" class="table-row_table_cell-1 is_done_text"> {{ list.name }}</div>
                 {% else %}
-                    <div class="table-row_table_cell-1"> {{ list.name }}</div>
+                    <div id="isDone_{{ list.id }}" class="table-row_table_cell-1"> {{ list.name }}</div>
                 {% endif %}
                 <div class="buttons">
                     <div class="table-data-two_table-icon">
-                        <a href='{% url "list_item:edit" pk=list_name.id %}'>
+                        <a href='{% url "list_item:edit" pk=list.id %}'>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -74,6 +74,7 @@
 
 {% block js %}
 <script>
+const listId = JSON.parse('{{ list_name.id|safe }}');
 const rows = document.querySelectorAll('.table-row_table_cell-1');
 rows.forEach(handler);
 const token = getCookie('csrftoken');
@@ -101,15 +102,14 @@ function getCookie(name) {
 
 function isDoneRequest(event) {
     const id = event.target.id.split('_').pop();
-    const listId = document.location.href.split('/').pop();
     const url = document.location.href.replace(`/${listId}`, '/done/');
     return fetch(url, {
         method: 'POST',
         headers: new Headers({'X-CSRFToken': token}),
         redirect: 'follow',
         body: JSON.stringify({id: id})
-    }).then(respone => {
-        if (respone.status === 201) {
+    }).then(response => {
+        if (response.status === 201) {
             if (event.target.classList.contains('is_done_text')) {
                 event.target.classList.remove('is_done_text');
             } else {
