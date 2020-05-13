@@ -71,3 +71,4 @@ def edit_view(request, pk):
         form = ListForm(instance=list_)
 
     return render(request, 'new_list.html', {'form': form})
+
