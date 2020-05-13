@@ -7,24 +7,24 @@
 {% block body %}
     <section class="wrapper__relationship">
 
-        <div class="relationship__table-data">
-            <div class="table-data__table-header">
-                <div class="table-data_table-header-item-1">TO DO list</div>
-                <a class="add_new_list" href="{% url "main:create" %}">
-                     <div class="header__button-create-bundle">+</div>
-                </a>
-            </div>
+    <div class="relationship__table-data">
+    <div class="table-data__table-header">
+        <div class="table-data_table-header-item-1">TO DO list</div>
+        <a class="add_new_list" href="{% url "main:create" %}">
+            <div class="header__button-create-bundle">+</div>
+        </a>
+    </div>
     {% for list in lists %}
         <div class="table-data__table-row">
-        <div class="table-row_table_cell-1">
-            <a href="{% url "list_item:list_item" pk=list.id %}">
-                {% if list.is_done %}
-                    <li class="is_done_text">{{ list.name }}</li>
-                {% else %}
-                    <li>{{ list.name }}</li>
-                {% endif %}
-            </a>
-        </div>
+            <div class="table-row_table_cell-1">
+                <a href="{% url "list_item:list_item" pk=list.id %}">
+                    {% if list.is_done %}
+                        <li class="is_done_text">{{ list.name }}</li>
+                    {% else %}
+                        <li>{{ list.name }}</li>
+                    {% endif %}
+                </a>
+            </div>
             <div class="buttons">
                 <div class="table-data-two_table-icon">
                     <a href='{% url "main:edit" pk=list.id %}'>
@@ -60,5 +60,16 @@
                 <div class="table-row_table_cell-1"></div>
             </div>
         {% endfor %}
+    {% endif %}
+    {% if pages.1 %}
+        <div class="table-data__table-row">
+            <div class="paginator_class">
+                <ul class="pagination-wrapper_button">
+                    {% for page in pages %}
+                        <li><a class="active" href="/?page={{ page }}">{{ page }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

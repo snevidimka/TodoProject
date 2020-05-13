@@ -8,21 +8,25 @@
     <section class="wrapper__relationship">
         <div class="relationship__table-data">
             <div class="table-data__table-header">
-                <div class="table-data_table-header-item-1">{{ list_name }}</div>
-                <a class="add_new_list" href="/create/">
+                <div class="table-data_table-header-item-1">
+                    <a href='{% url "main:main" %}'>
+                        {{ list_name.name }}
+                    </a>
+                </div>
+                <a class="add_new_list" href="{% url "list_item:create" pk=list_name.id %}">
                      <div class="header__button-create-bundle">+</div>
                 </a>
             </div>
             {% for list in lists %}
                 <div class="table-data__table-row">
                 {% if list.is_done %}
-                    <div class="table-row_table_cell-1 is_done_text"> {{ list.name }}</div>
+                    <div id="isDone_{{ list.id }}" class="table-row_table_cell-1 is_done_text"> {{ list.name }}</div>
                 {% else %}
-                    <div class="table-row_table_cell-1"> {{ list.name }}</div>
+                    <div id="isDone_{{ list.id }}" class="table-row_table_cell-1"> {{ list.name }}</div>
                 {% endif %}
                 <div class="buttons">
                     <div class="table-data-two_table-icon">
-                        <a href='#'>
+                        <a href='{% url "list_item:edit" pk=list.id %}'>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -32,12 +36,10 @@
                         </a>
                     </div>
                     <div class="calendarik">
-                        {% if list.date %}
-                            {{ list.date }}
+                        {% if list.expare_date %}
+                            {{ list.expare_date }}
                         {% else %}
-                            <a href='#'>
                                 <img src="/static/images/calendar.png" alt="calendar" width="26px" height="24px">
-                            </a>
                         {% endif %}
                     </div>
                     <div class="table-row_table_icon">
@@ -57,5 +59,66 @@
     </section>
 
 </div>
+    {% if pages.1 %}
+        <div class="table-data__table-row">
+            <div class="paginator_class">
+                <ul class="pagination-wrapper_button">
+                    {% for page in pages %}
+                        <li><a class="active" href="/list/{{ list_name.id }}?page={{ page }}">{{ page }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
 
+{% block js %}
+<script>
+const listId = JSON.parse('{{ list_name.id|safe }}');
+const rows = document.querySelectorAll('.table-row_table_cell-1');
+rows.forEach(handler);
+const token = getCookie('csrftoken');
+
+function handler(row) {
+    row.addEventListener('click', isDoneRequest);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function isDoneRequest(event) {
+    const id = event.target.id.split('_').pop();
+    const url = document.location.href.replace(`/${listId}`, '/done/');
+    return fetch(url, {
+        method: 'POST',
+        headers: new Headers({'X-CSRFToken': token}),
+        redirect: 'follow',
+        body: JSON.stringify({id: id})
+    }).then(response => {
+        if (response.status === 201) {
+            if (event.target.classList.contains('is_done_text')) {
+                event.target.classList.remove('is_done_text');
+            } else {
+                event.target.classList.add('is_done_text');
+            }
+        } else {
+            alert('Сервер не доступен');
+        }
+    })
+}
+</script>
 {% endblock %}

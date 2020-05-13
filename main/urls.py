@@ -1,6 +1,5 @@
 from django.urls import path
 from main.views import main_view, edit_view, create_view
-from list_item.views import list_item_view
 
 
 app_name = 'main'

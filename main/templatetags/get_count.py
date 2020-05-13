@@ -1,5 +1,3 @@
-# from django import templates
-# from django.utils.html import format_html
 from django.template.defaulttags import register
 from TodoProject.settings import DIV_COUNT
 
@@ -12,10 +10,12 @@ def get_count(lists):
 
     return list(range(DIV_COUNT - len(lists)))
 
-# @register.filter
-# def my_tag(lists):
-#     result = ''
-#     for i in range(DIV_COUNT - len(lists)):
-#         result += '<div class="table-data__table-row"></div>'
-#     return format_html(result)
+
+@register.filter
+def div_count():
+    """
+    Возвращает список - количество, для генераци пустых блоков
+    """
+
+    return DIV_COUNT
 

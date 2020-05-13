@@ -13,5 +13,14 @@ class ListItemModel(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        # TODO Написать логику, зачеркивания Списка, когда все дела в этом списке выполнены
+        list_ = self.list
+        super().save()
+
+
+
     class Meta:
         verbose_name = 'Элемент списка'
+        unique_together = ('name', 'list')
