@@ -52,17 +52,22 @@ def create_view(request):
 
 @login_required(login_url='registration/login/')
 def edit_view(request, pk):
-    """ Редактирование списка задач """
-    obj = ListModel.objects.filter(id=pk).first()
-    form = ListForm(instance=obj)
+    """ Редактирование существующей задачи """
+    list_ = ListModel.objects.filter(id=pk).first()
 
     if request.method == 'POST':
-        name = request.POST['name']
-        form = ListForm({'name': name, 'user': request.user})
+
+        form = ListForm({
+            'name': request.POST['name'],
+            'user': request.user
+        }, instance=list_)
         success_url = reverse('main:main')
 
         if form.is_valid():
             form.save()
             return redirect(success_url)
 
-    return render(request, 'list.html', {'form': form})
+    else:
+        form = ListForm(instance=list_)
+
+    return render(request, 'new_list.html', {'form': form})
