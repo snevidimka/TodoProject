@@ -21,7 +21,6 @@ def create_user(request):
     return render(request, 'registration.html', {'form': form})
 
 
-@login_required(login_url='/registration/login/')
 def login_view(request):
     """ Залогинивание пользователя """
     form = LoginForm()
