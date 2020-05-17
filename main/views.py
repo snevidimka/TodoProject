@@ -3,6 +3,7 @@ from main.models import ListModel
 from main.forms import ListForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
 from list_item.models import ListItemModel
 
 PAGE_COUNT = 6
@@ -35,7 +36,7 @@ def main_view(request):
 
 @login_required(login_url='/registration/login/')
 def create_view(request):
-    """ Создание списка задач """
+    """ Создание нового списка дел """
     form = ListForm()
 
     if request.method == 'POST':
@@ -52,7 +53,7 @@ def create_view(request):
 
 @login_required(login_url='/registration/login/')
 def edit_view(request, pk):
-    """ Редактирование существующей задачи """
+    """ Редактирование существующего списка дел """
     list_ = ListModel.objects.filter(id=pk).first()
 
     if request.method == 'POST':
@@ -72,3 +73,14 @@ def edit_view(request, pk):
 
     return render(request, 'new_list.html', {'form': form})
 
+
+@login_required(login_url='/registration/login/')
+def delete_view(request, pk):
+    """ Удаление существующего списка дел """
+    if request.method == 'POST':
+        list_ = ListModel.objects.filter(id=pk).first()
+        if list_:
+            list_.delete()
+            return HttpResponse(status=201)
+
+    return HttpResponse(status=404)
