@@ -102,6 +102,9 @@ def delete_item_view(request, pk):
         list_item = ListItemModel.objects.filter(id=pk).first()
         if list_item:
             list_item.delete()
+            return HttpResponse(status=201)
+
+    return HttpResponse(status=404)
 
 
 def all_done_view(request):

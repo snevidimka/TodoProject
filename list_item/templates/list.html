@@ -13,12 +13,15 @@
                         {{ list_name.name }}
                     </a>
                 </div>
+                <a class="table-data_table-header-item-2" href="{% url "list_item:all_done" %}">
+                    <div class="header__button-create-bundle">all</div>
+                </a>
                 <a class="add_new_list" href="{% url "list_item:create" pk=list_name.id %}">
                      <div class="header__button-create-bundle">+</div>
                 </a>
             </div>
             {% for list in lists %}
-                <div class="table-data__table-row">
+                <div id="list_{{ list.id }}" class="table-data__table-row">
                 {% if list.is_done %}
                     <div id="isDone_{{ list.id }}" class="table-row_table_cell-1 is_done_text"> {{ list.name }}</div>
                 {% else %}
@@ -43,7 +46,7 @@
                         {% endif %}
                     </div>
                     <div class="table-row_table_icon">
-                        <a class="delete_button" href="#">
+                        <a class="delete_button" href="{% url "list_item:delete" pk=list.id %}">
                             <svg width="20" height="22" viewBox="0 0 20 22" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -82,7 +85,9 @@ const token = getCookie('csrftoken');
 const deleteAllButton = document.getElementsByClassName('table-data_table-header-item-2')[0];
 
 rows.forEach(handler);
-delButtons.forEach(button => button.addEventListener('click', delFunction));
+delButtons.forEach(button => {
+    button.addEventListener('click', delFunction);
+});
 deleteAllButton.addEventListener('click', allDone);
 
 function allDone(event) {
@@ -136,7 +141,7 @@ function createMessageBlock(title, text) {
     const divBlock = document.createElement('div');
     divBlock.className = 'wrapper__auth';
     divBlock.id = "id_new_edit_block";
-    divBlock.innerHTML = `<div class="auth__column_right"><div class="auth__column_right_form"><div class="auth__column_right_form__header">${ title }</div><div id="message_text"> ${ text }</div><div class="auth__column_right__form_footer"><label class="form_footer_button-submit"><input type="submit" form="auth_form" value="" style="display: none"><div class="auth__button_submit" id="login-submit-btn" ><span>&#10004</span></div></label><label class="form_footer_button-cancel"><a href="#" id="cancel_btn"><div class="auth__button_submit" id="login-cancel-btn" ><span>&#9587</span></div></a></label></div></div></div>`;
+    divBlock.innerHTML = `<div class="auth__column_right"><div class="auth__column_right_form"><div class="auth__column_right_form__header">${ title }</div><div id="message_text"> ${ text }</div><div class="auth__column_right__form_footer"><label class="form_footer_button-submit"><input type="submit" form="auth_form" value="" style="display: none"><a href="#" id="login-submit-btn"><div class="auth__button_submit"  ><span>&#10004</span></div></a></label><label class="form_footer_button-cancel"><a href="#" id="cancel_btn"><div class="auth__button_submit" id="login-cancel-btn" ><span>&#9587</span></div></a></label></div></div></div>`;
     return divBlock;
 }
 
@@ -147,7 +152,7 @@ function deleteMessageBlock(event) {
 
 function deleteListItem(url, event) {
     const pk = url.split('/').pop();
-    const rowId = `row_${pk}`;
+    const rowId = `list_${pk}`;
     deleteMessageBlock(event);
     return fetch(url, {
         method: 'POST',
@@ -155,7 +160,7 @@ function deleteListItem(url, event) {
         redirect: 'follow',
     }).then(response => {
         if (response.status === 201) {
-            document.getElementById(rowId).remove();
+            document.getElementById(rowId).remove()
         } else {
             alert('Удалить не получилось');
         }
@@ -168,9 +173,11 @@ function delFunction(event) {
     const message = createMessageBlock('Внимание', 'Вы действительно хотите удалить дело?');
     body.appendChild(message);
     document.getElementById('cancel_btn').addEventListener(
-        'click', event => deleteMessageBlock(event));
+        'click', event => deleteMessageBlock(event)
+    );
     document.getElementById('login-submit-btn').addEventListener(
-     'click', event => deleteListItem(url, event));
+        'click', event => deleteListItem(url, event)
+    );
 }
 
 </script>
