@@ -20,4 +20,3 @@ class CustomUserForm(UserCreationForm):
 class LoginForm(forms.Form):
     login = forms.CharField(required=True, max_length=64, widget=forms.TextInput())
     password = forms.CharField(required=True, max_length=64, widget=forms.PasswordInput())
-

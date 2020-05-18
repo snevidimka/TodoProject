@@ -10,7 +10,7 @@ import json
 PAGE_COUNT = 6
 
 
-@login_required(login_url='registration/login/')
+@login_required(login_url='/registration/login/')
 def list_item_view(request, pk):
     ''' при запросе вернет ответ со страничкой list.html '''
 
@@ -38,9 +38,9 @@ def list_item_view(request, pk):
     return render(request, 'list.html', context)
 
 
-@login_required(login_url='registration/login/')
+@login_required(login_url='/registration/login/')
 def create_item_view(request, pk):
-    """ Создание нового списка дел """
+    """ Создание нового дела """
     form = ListItemForm()
 
     if request.method == 'POST':
@@ -60,9 +60,9 @@ def create_item_view(request, pk):
     return render(request, 'new_list_item.html', {'form': form, 'pk': pk})
 
 
-@login_required(login_url='registration/login/')
+@login_required(login_url='/registration/login/')
 def edit_item_view(request, pk):
-    """ Редактирование существующего списка дел """
+    """ Редактирование существующего дела """
     list_item = ListItemModel.objects.filter(id=pk).first()
     list_id = list_item.list_id
 
@@ -84,13 +84,37 @@ def edit_item_view(request, pk):
     return render(request, 'edit_list_item.html', {'form': form, 'pk': list_id})
 
 
-@login_required(login_url='registration/login/')
+@login_required(login_url='/registration/login/')
 def done_item_view(request):
-    """ Зачеркивание дела """
+    """ Зачеркивание соответствующего дела """
     data = json.loads(request.body.decode())
     pk = int(data['id'])
     list_item = ListItemModel.objects.get(id=pk)
     value = not list_item.is_done
     list_item.is_done = value
     list_item.save()
+    return HttpResponse(status=201)
+
+
+@login_required(login_url='/registration/login/')
+def delete_item_view(request, pk):
+    """ Удаление соответствующего дела """
+    if request.method == 'POST':
+        list_item = ListItemModel.objects.filter(id=pk).first()
+        if list_item:
+            list_item.delete()
+            return HttpResponse(status=201)
+
+    return HttpResponse(status=404)
+
+
+@login_required(login_url='/registration/login/')
+def all_done_view(request):
+    """ Зачеркивание всех дел """
+    data = json.loads(request.body.decode())
+    list_id = int(data['listId'])
+    list_items = ListItemModel.objects.filter(list_id=list_id)
+    for item in list_items:
+        item.is_done = True
+        item.save()
     return HttpResponse(status=201)
