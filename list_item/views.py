@@ -40,7 +40,7 @@ def list_item_view(request, pk):
 
 @login_required(login_url='/registration/login/')
 def create_item_view(request, pk):
-    """ Создание нового списка дел """
+    """ Создание нового дела """
     form = ListItemForm()
 
     if request.method == 'POST':
@@ -62,7 +62,7 @@ def create_item_view(request, pk):
 
 @login_required(login_url='/registration/login/')
 def edit_item_view(request, pk):
-    """ Редактирование существующего списка дел """
+    """ Редактирование существующего дела """
     list_item = ListItemModel.objects.filter(id=pk).first()
     list_id = list_item.list_id
 
@@ -86,7 +86,7 @@ def edit_item_view(request, pk):
 
 @login_required(login_url='/registration/login/')
 def done_item_view(request):
-    """ Зачеркивание дела """
+    """ Зачеркивание соответствующего дела """
     data = json.loads(request.body.decode())
     pk = int(data['id'])
     list_item = ListItemModel.objects.get(id=pk)
@@ -98,6 +98,7 @@ def done_item_view(request):
 
 @login_required(login_url='/registration/login/')
 def delete_item_view(request, pk):
+    """ Удаление соответствующего дела """
     if request.method == 'POST':
         list_item = ListItemModel.objects.filter(id=pk).first()
         if list_item:
@@ -110,7 +111,6 @@ def delete_item_view(request, pk):
 @login_required(login_url='/registration/login/')
 def all_done_view(request):
     """ Зачеркивание всех дел """
-    # TODO ДЗ => Написать логику вычеркивания всех элементов и не забыть про вычеркивание всего списка
     data = json.loads(request.body.decode())
     list_id = int(data['listId'])
     list_items = ListItemModel.objects.filter(list_id=list_id)
