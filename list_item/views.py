@@ -107,6 +107,14 @@ def delete_item_view(request, pk):
     return HttpResponse(status=404)
 
 
+@login_required(login_url='/registration/login/')
 def all_done_view(request):
+    """ Зачеркивание всех дел """
     # TODO ДЗ => Написать логику вычеркивания всех элементов и не забыть про вычеркивание всего списка
-    pass
+    data = json.loads(request.body.decode())
+    list_id = int(data['listId'])
+    list_items = ListItemModel.objects.filter(list_id=list_id)
+    for item in list_items:
+        item.is_done = True
+        item.save()
+    return HttpResponse(status=201)

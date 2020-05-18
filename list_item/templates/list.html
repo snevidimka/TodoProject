@@ -81,6 +81,7 @@ const body = document.getElementsByClassName('relationship__table-data')[0];
 const listId = JSON.parse('{{ list_name.id|safe }}');
 const rows = document.querySelectorAll('.table-row_table_cell-1');
 const delButtons = document.querySelectorAll('.delete_button');
+console.log(delButtons);
 const token = getCookie('csrftoken');
 const deleteAllButton = document.getElementsByClassName('table-data_table-header-item-2')[0];
 
@@ -89,10 +90,24 @@ delButtons.forEach(button => {
     button.addEventListener('click', delFunction);
 });
 deleteAllButton.addEventListener('click', allDone);
-
+console.log(rows);
 function allDone(event) {
     event.preventDefault();
-    console.log('Click allDone');
+    const url = event.currentTarget.href;
+    return fetch(url, {
+        method: 'POST',
+        headers: new Headers({'X-CSRFToken': token}),
+        redirect: 'follow',
+        body: JSON.stringify({listId: listId})
+    }).then(response => {
+        if (response.status === 201) {
+            rows.forEach(row => {
+                row.classList.add('is_done_text');
+            });
+        } else {
+            alert('Сервер не доступен');
+        }
+    });
 }
 
 function handler(row) {

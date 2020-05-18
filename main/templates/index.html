@@ -39,7 +39,7 @@
                     </a>
                 </div>
                 <div class="table-row_table_icon">
-                    <a class="delete_button" href="{% url "list_item:delete" pk=list.id %}">
+                    <a class="delete_button" href="{% url "main:delete" pk=list.id %}">
                         <svg width="20" height="22" viewBox="0 0 20 22"
                              fill="none"
                              xmlns="http://www.w3.org/2000/svg">
@@ -81,25 +81,14 @@
 {% block js %}
 <script>
 const body = document.getElementsByClassName('relationship__table-data')[0];
-const listId = JSON.parse('{{ list.id|safe }}');
-const rows = document.querySelectorAll('.table-row_table_cell-1');
+const rows = document.querySelectorAll('.table-row_table_icon');
 const delButtons = document.querySelectorAll('.delete_button');
 const token = getCookie('csrftoken');
 
-rows.forEach(handler);
+
 delButtons.forEach(button => {
     button.addEventListener('click', delFunction);
 });
-deleteAllButton.addEventListener('click', allDone);
-
-function allDone(event) {
-    event.preventDefault();
-    console.log('Click allDone');
-}
-
-function handler(row) {
-    row.addEventListener('click', isDoneRequest);
-}
 
 function getCookie(name) {
     let cookieValue = null;
@@ -118,27 +107,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function isDoneRequest(event) {
-    const id = event.target.id.split('_').pop();
-    const url = document.location.href.replace(`/${listId}`, '/done/');
-    return fetch(url, {
-        method: 'POST',
-        headers: new Headers({'X-CSRFToken': token}),
-        redirect: 'follow',
-        body: JSON.stringify({id: id})
-    }).then(response => {
-        if (response.status === 201) {
-            if (event.target.classList.contains('is_done_text')) {
-                event.target.classList.remove('is_done_text');
-            } else {
-                event.target.classList.add('is_done_text');
-            }
-        } else {
-            alert('Сервер не доступен');
-        }
-    })
-}
-
 function createMessageBlock(title, text) {
     const divBlock = document.createElement('div');
     divBlock.className = 'wrapper__auth';
@@ -149,15 +117,39 @@ function createMessageBlock(title, text) {
 
 function deleteMessageBlock(event) {
     event.preventDefault();
+    console.log(event)
     document.getElementById('id_new_edit_block').remove();
+}
+
+function deleteListItem(url, event) {
+    const pk = url.split('/').pop();
+    const rowId = `list_${pk}`;
+    deleteMessageBlock(event);
+    return fetch(url, {
+        method: 'POST',
+        headers: new Headers({'X-CSRFToken': token}),
+        redirect: 'follow',
+    }).then(response => {
+        if (response.status === 201) {
+            document.getElementById(rowId).remove()
+        } else {
+            alert('Удалить не получилось');
+        }
+    })
 }
 
 function delFunction(event) {
     event.preventDefault();
+    const url = event.currentTarget.href;
     const message = createMessageBlock('Внимание', 'Вы действительно хотите удалить список дел?');
     body.appendChild(message);
+    document.getElementById('cancel_btn').addEventListener(
+        'click', event => deleteMessageBlock(event)
+    );
+    document.getElementById('login-submit-btn').addEventListener(
+        'click', event => deleteListItem(url, event)
+    );
 }
-
 
 </script>
 {% endblock %}
