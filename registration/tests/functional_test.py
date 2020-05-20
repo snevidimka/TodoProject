@@ -6,6 +6,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as es
 from selenium.webdriver.common.by import By
+import time
 # from .conftest import TEST_CLIENT
 
 TEST_CLIENT = {
@@ -33,6 +34,7 @@ def test_open_login_page(live_server, new_client):
     button = browser.find_element_by_id('login-submit-btn')
     button.click()
 
-    WebDriverWait(browser, 3).until(es.title_is('Главная'))
+    # WebDriverWait(browser, 3).until(es.title_is('Главная'))
+    time.sleep(5)
     assert browser.title == 'Главная'
     # browser.close()
