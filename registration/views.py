@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url='/registration/login/')
 def create_user(request):
     """ Создание пользователя """
     form = CustomUserForm()
