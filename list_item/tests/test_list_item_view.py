@@ -47,6 +47,8 @@ def test_list_item_view(new_client, new_list, new_list_item):
     assert '<title>Список</title>' in html
     assert html.strip().endswith('</html>')
     assert 'list.html' in [t.name for t in response.templates]
+    assert new_list.name == 'Тестовый список дел'
+    assert new_list_item.name == 'Тестовое дело'
 
 
 @pytest.mark.django_db

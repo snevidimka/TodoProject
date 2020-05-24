@@ -48,4 +48,5 @@ def test_create_view(live_server, new_client):
     time.sleep(1)
 
     assert browser.title == 'Главная'
+    assert browser.find_element_by_link_text('Тестовый список')
     browser.close()
