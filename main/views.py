@@ -4,7 +4,9 @@ from main.forms import ListForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
+from main.models import ListModel
 from list_item.models import ListItemModel
+
 
 PAGE_COUNT = 6
 
