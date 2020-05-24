@@ -12,7 +12,6 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from list_item.models import ListItemModel
 from main.models import ListModel
 
-
 TEST_CLIENT = {
     'username': 'TestUser',
     'email': '123@123.ru',

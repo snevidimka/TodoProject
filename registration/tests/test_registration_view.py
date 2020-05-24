@@ -49,3 +49,17 @@ def test_can_save_a_post_request(client):
     assert user
     assert user.email == '123@123.ru'
 
+
+@pytest.mark.django_db
+def test_logout_view(client):
+    """
+    Разлогинивание пользователя
+    """
+    response = client.post(reverse('registration:logout'))
+    assert response.status_code == 302
+    response = client.get(reverse('registration:login'))
+    html = response.content.decode('utf8')
+    assert html.startswith('<!DOCTYPE html>')
+    assert '<title>Войти</title>' in html
+    assert html.strip().endswith('</html>')
+    assert 'login.html' in [t.name for t in response.templates]

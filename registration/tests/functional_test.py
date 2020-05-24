@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as es
 from selenium.webdriver.common.by import By
 import time
+
 # from .conftest import TEST_CLIENT
 
 TEST_CLIENT = {
@@ -23,7 +24,8 @@ def test_create_view(live_server, new_client):
     Попадает на страницу с title 'Войти' и надписью ВХОД
     Вводит тестовый логин и пароль и переходит на главную
     """
-    browser = webdriver.Chrome('C:\\Users\sergey\PycharmProjects\DjangoProject\TodoProject\TodoProject\chromedriver.exe')
+    browser = webdriver.Chrome(
+        'C:\\Users\sergey\PycharmProjects\DjangoProject\TodoProject\TodoProject\chromedriver.exe')
     browser.get(live_server.url)
     assert browser.title == 'Войти'
     login = browser.find_element_by_name('login')
@@ -46,6 +48,4 @@ def test_create_view(live_server, new_client):
     time.sleep(2)
 
     assert browser.title == 'Главная'
-    # browser.close()
-
-
+    browser.close()

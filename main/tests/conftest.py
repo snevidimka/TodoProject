@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from django.db import connections
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from main.models import ListModel
 
 TEST_CLIENT = {
     'username': 'TestUser',
@@ -26,3 +27,13 @@ def new_client(db):
     new_client.set_password(TEST_CLIENT['password'])
     new_client.save()
     return new_client
+
+
+@pytest.fixture
+def new_list(new_client):
+    list_ = ListModel(
+        name='Тестовый список дел',
+        user=new_client
+    )
+    list_.save()
+    return list_
